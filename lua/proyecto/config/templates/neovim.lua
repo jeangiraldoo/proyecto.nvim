@@ -61,14 +61,10 @@ return {
 				"",
 			},
 		},
-		{
-			name = "LICENSE",
-			type = "file",
-			content = {
-				"",
-			},
-		},
 	},
 	version_control = "git",
-	license = "MIT",
+	license = {
+		id = "GPL_3.0",
+		file_name = "LICENSE",
+	},
 }

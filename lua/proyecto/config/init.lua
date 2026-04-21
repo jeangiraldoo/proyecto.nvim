@@ -1,3 +1,6 @@
+local dir = vim.fn.fnamemodify(debug.getinfo(1, "S").source:sub(2), ":h")
+print(dir)
+
 return {
 	templates = vim.iter(vim.fs.dir(vim.fs.joinpath(dir, "templates"))):fold({}, function(acc, name, type)
 		if type == "file" then
@@ -14,10 +17,15 @@ return {
 	new = {
 		default_project_name = "proyect",
 	},
-	licenses = {
-		MIT = {},
-		GPLv3 = {},
-	},
+	licenses = vim.iter(vim.fs.dir(vim.fs.joinpath(dir, "licenses"))):fold({}, function(acc, name, type)
+		if type == "file" then
+			local license_name = name:gsub("%.txt$", "")
+
+			acc[license_name] = vim.fn.readfile(vim.fs.joinpath(dir, "licenses", name))
+		end
+
+		return acc
+	end),
 	ui = {
 		views = {
 			project_name_prompt = {

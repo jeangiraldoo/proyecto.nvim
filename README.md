@@ -50,10 +50,45 @@ require("proyecto").setup {
     templates = {
         -- Template definitions. See ./config/templates/ for the definitions
     },
+    licenses = {
+        -- Maps license names to lists of strings
+        -- See ./config/licenses/ for the license files
+    }
     version_control = { -- Command list per version control system
         git = { "git", "init", "." },
         jujutsu = { "jj", "init", "." },
     },
+}
+```
+
+## Add licenses
+
+There's 2 easy ways to add new licenses:
+
+### List of strings
+
+You can define the lines of the license file as a list of strings:
+
+```lua
+require("proyecto").setup {
+    licenses = {
+        new_license_name = {
+            "First line of the license file",
+            "Second lne..."
+        }
+    }
+}
+```
+
+### Loading an existing file
+
+If you have a file with the license text, you can load it into the plugin like this:
+
+```lua
+require("proyecto").setup {
+    licenses = {
+        new_license_name = vim.fn.readfile("") --The string must be the absolute path to the file
+    }
 }
 ```
 
