@@ -62,7 +62,7 @@ return {
 			},
 		},
 	},
-	version_control = "git",
+	version_control_name = "git",
 	license = {
 		id = "GPL_3.0",
 		file_name = "LICENSE",
