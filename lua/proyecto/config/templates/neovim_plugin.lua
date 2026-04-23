@@ -55,6 +55,32 @@ return {
 			},
 		},
 		{
+			name = ".editorconfig",
+			type = "file",
+			content = {
+				"root = true",
+
+				"[*]",
+				"charset = utf-8",
+				"trim_trailing_whitespace = true",
+				"",
+				"[*.lua]",
+				"indent_size = 4",
+				"max_line_length = 100",
+			},
+		},
+		{
+			name = ".stylua.toml",
+			type = "file",
+			content = {
+				"indent_width = 4",
+				'syntax = "LuaJIT"',
+				'collapse_simple_statement = "Always"',
+				'call_parentheses = "None"',
+				"column_width = 100",
+			},
+		},
+		{
 			name = "CONTRIBUTING.md",
 			type = "file",
 			content = {
