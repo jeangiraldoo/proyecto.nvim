@@ -1,7 +1,19 @@
 local Utils = require "proyecto.new.utils"
 
 local New = {}
-local function create_node(path, node, project_name)
+
+local function setup_buf(buf_id, win_id)
+	vim.api.nvim_win_set_buf(win_id, buf_id)
+	vim.api.nvim_set_option_value("bufhidden", "wipe", { buf = buf_id })
+
+	vim.keymap.set("n", "q", function() vim.api.nvim_win_close(win_id, true) end, { buf = buf_id })
+end
+
+local function _create_node(path, node, project_name)
+	vim.validate("path", path, "string")
+	vim.validate("node", node, "table")
+	vim.validate("project_name", project_name, "string")
+
 	local node_name = Utils.project_name_gsub(project_name, node.name)
 
 	if node.type == "directory" then
@@ -9,7 +21,7 @@ local function create_node(path, node, project_name)
 		vim.fn.mkdir(new_dir_path, "p")
 
 		for _, child in ipairs(node.content or {}) do
-			create_node(new_dir_path, child, project_name)
+			_create_node(new_dir_path, child, project_name)
 		end
 	elseif node.type == "file" then
 		local new_file_path = vim.fs.joinpath(path, node_name)
@@ -26,7 +38,41 @@ local function create_node(path, node, project_name)
 	end
 end
 
+function New.launch_UI()
+	local name_prompt_view = require "proyecto.new.UI_views.project_name_prompt"
+
+	local win_id
+	local prompt_buf_id = name_prompt_view.create(function(project_name)
+		local template_selection_view = require "proyecto.new.UI_views.template_selection"
+
+		local template_selection_buf_id = template_selection_view.create(function(template_name)
+			local template_customization_view = require "proyecto.new.UI_views.template_customization"
+			local template_customization_buf_id = template_customization_view.create(
+				project_name,
+				template_name,
+				function(version_control, license)
+					vim.api.nvim_win_close(win_id, true)
+					print "FINISHED"
+					print(version_control)
+					print(license)
+				end
+			)
+			setup_buf(template_customization_buf_id, win_id)
+		end)
+		setup_buf(template_selection_buf_id, win_id)
+	end)
+
+	win_id = Utils.open_window(prompt_buf_id)
+	setup_buf(prompt_buf_id, win_id)
+end
+
 function New.create(template_name, opts)
+	vim.validate("template_name", template_name, "string")
+
+	vim.validate("opts", opts, "table", true)
+	vim.validate("opts.project_name", opts.project_name, "string", true)
+	vim.validate("opts.root", opts.root, "string", true)
+
 	local config = require "proyecto.config"
 	local template = config.templates[template_name]
 
@@ -39,7 +85,7 @@ function New.create(template_name, opts)
 	local root = opts.root or vim.fn.getcwd()
 
 	for _, node in ipairs(template.file_structure) do
-		create_node(root, node, project_name)
+		_create_node(root, node, project_name)
 	end
 
 	if template.version_control_name and config.version_control[template.version_control_name] then

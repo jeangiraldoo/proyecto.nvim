@@ -12,6 +12,11 @@ vim.api.nvim_create_user_command("Proyecto", function(opts)
 	if args[1] == "new" then
 		local template_name, project_name = args[2], args[3]
 
+		if not template_name then
+			Proyecto.new.launch_UI()
+			return
+		end
+
 		Proyecto.new.create(template_name, { project_name = project_name })
 	end
 end, {
@@ -26,9 +31,7 @@ end, {
 		end
 
 		if #args == 2 then -- :Proyecto <cmd> <cursor>
-			if args[1] == "new" then
-				return require("proyecto").get_template_names()
-			end
+			if args[1] == "new" then return require("proyecto").get_template_names() end
 		end
 
 		return {}

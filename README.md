@@ -32,8 +32,9 @@ arguments:
 
 ### new
 
-Bootstraps a new project using a template. Additionally, the `new` argument accepts
-2 positional subarguments:
+Bootstraps a new project from a template. If no subarguments are provided, a
+simple floating window is displayed, allowing you to interactively select and
+customize a template. Otherwise, the command accepts two positional subarguments:
 
 1. The template name
 2. An optional project name
@@ -58,6 +59,68 @@ require("proyecto").setup {
         git = { "git", "init", "." },
         jujutsu = { "jj", "init", "." },
     },
+    new = {
+        default_project_name = "proyect",
+        ui = {
+            layout = {
+                width = 0.5,
+                height = 0.5,
+            },
+            views = {
+                project_name_prompt = {
+                    header = {
+                        lines = {
+                            "New project",
+                            "",
+                            "[Enter] Confirm   [q] Quit",
+                            "",
+                        },
+                        center = true,
+                    },
+                prompt = "Project name:", },
+                template_selection = {
+                    header = {
+                        lines = {
+                            "Select the template to use",
+                            "",
+                            "[Enter] Confirm   [q] Quit",
+                            "",
+                        },
+                        center = true,
+                    },
+                    cursor_text = ">",
+                    gutter_text = "--> ",
+                },
+                template_customization = {
+                    header = {
+                        lines = {
+                            "Template customization",
+                            "",
+                            "[Enter] Confirm   [q] Quit   [g] Cycle version control [p] Cycle license",
+                            "",
+                        },
+                        center = true,
+                    },
+                    version_control = {
+                        text = "Version control: ",
+                        cycle_keymap = "g",
+                    },
+                    license = {
+                        text = "License: ",
+                        cycle_keymap = "p",
+                    },
+                    dir_structure = {
+                        lines = {
+                            "",
+                            "Directory structure",
+                            "",
+                        },
+                        center = false,
+                    },
+                },
+            },
+        },
+    }
 }
 ```
 
