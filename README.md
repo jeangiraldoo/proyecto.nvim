@@ -124,11 +124,11 @@ require("proyecto").setup {
 }
 ```
 
-## Add licenses
+### Add licenses
 
 There's 2 easy ways to add new licenses:
 
-### List of strings
+#### List of strings
 
 You can define the lines of the license file as a list of strings:
 
@@ -143,7 +143,7 @@ require("proyecto").setup {
 }
 ```
 
-### Loading an existing file
+#### Loading an existing file
 
 If you have a file with the license text, you can load it into the plugin like this:
 
@@ -155,7 +155,7 @@ require("proyecto").setup {
 }
 ```
 
-## Built-in templates
+### Built-in templates
 
 A template is a regular Lua table that defines information about a project.
 A template looks like this:
