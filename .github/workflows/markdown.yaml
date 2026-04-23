@@ -1,0 +1,25 @@
+name: Markdown checks
+
+on:
+    pull_request:
+        branches:
+            - main
+        types:
+            - opened
+            - synchronize
+            - reopened
+        paths:
+            - "**/*.md"
+
+jobs:
+    linting:
+        name: Linting check
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+              with:
+                  fetch-depth: 0
+
+            - uses: DavidAnson/markdownlint-cli2-action@v22
+              with:
+                  globs: "**/*.md"

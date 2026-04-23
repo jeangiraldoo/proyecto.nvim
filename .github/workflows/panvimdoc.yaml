@@ -1,0 +1,41 @@
+name: Auto-generate vim documentation
+
+on:
+    push:
+        branches:
+            - main
+        paths:
+            - README.md
+            - .github/workflows/panvimdoc.yaml
+
+permissions:
+    contents: write
+    pull-requests: write
+
+jobs:
+    docs:
+        runs-on: ubuntu-latest
+        name: pandoc to vimdoc
+        steps:
+            - uses: actions/checkout@v4
+
+            - uses: kdheepak/panvimdoc@main
+              with:
+                  vimdoc: proyecto
+                  toc: false # The README already includes one and they'd collide
+                  demojify: true
+                  version: "NVIM v0.10+"
+                  titledatepattern: "%d %B %Y"
+                  treesitter: true
+                  ignorerawblocks: true
+                  shiftheadinglevelby: -1
+
+            - name: Create Pull Request
+              uses: peter-evans/create-pull-request@v7
+              with:
+                  commit-message: "docs: auto-generate vimdoc"
+                  branch: "autogenerate-vim-doc"
+                  title: "docs: auto-generate vimdoc"
+                  body: "This pull request contains auto-generated Vim documentation"
+                  labels: "documentation"
+                  author: "github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
