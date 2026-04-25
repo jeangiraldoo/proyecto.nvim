@@ -52,9 +52,11 @@ function New.launch_UI()
 				template_name,
 				function(version_control, license)
 					vim.api.nvim_win_close(win_id, true)
-					print "FINISHED"
-					print(version_control)
-					print(license)
+					New.create(template_name, {
+						project_name = project_name,
+						version_control_name = version_control,
+						license = { id = license, file_name = "LICENSE" },
+					})
 				end
 			)
 			setup_buf(template_customization_buf_id, win_id)
@@ -88,14 +90,13 @@ function New.create(template_name, opts)
 		_create_node(root, node, project_name)
 	end
 
-	if template.version_control_name and config.version_control[template.version_control_name] then
-		vim.system(config.version_control[template.version_control_name])
-	end
+	local version_control_name = opts and opts.version_control_name or template.version_control_name
 
-	if template.license and config.licenses[template.license.id] then
-		local license_path = vim.fs.joinpath(root, template.license.file_name)
-		vim.fn.writefile(config.licenses[template.license.id], license_path)
-	end
+	vim.system(config.version_control[version_control_name])
+
+	local license = opts and opts.license or template.license
+	local license_path = vim.fs.joinpath(root, license.file_name)
+	vim.fn.writefile(config.licenses[license.id], license_path)
 
 	vim.notify("Project successfully created", vim.log.levels.INFO)
 end

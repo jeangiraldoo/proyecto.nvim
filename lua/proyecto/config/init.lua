@@ -51,7 +51,7 @@ return {
 						lines = {
 							"Template customization",
 							"",
-							"[Enter] Confirm   [q] Quit   [g] Cycle version control [p] Cycle license",
+							"[Enter] Confirm   [q] Quit   [t] Cycle version control [p] Cycle license",
 							"",
 						},
 						center = true,

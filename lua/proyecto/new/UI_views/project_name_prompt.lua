@@ -18,7 +18,7 @@ function ProjectNamePromptView.create(on_confirm)
 	local prompt_row = #lines
 	local zero_based_prompt_row = prompt_row - 1
 
-	vim.api.nvim_win_set_cursor(0, { prompt_row, #view_config.prompt + 1 })
+	-- vim.api.nvim_win_set_cursor(0, { prompt_row, #view_config.prompt + 1 })
 	vim.cmd "startinsert"
 
 	local function get_typed_name()

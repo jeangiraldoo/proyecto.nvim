@@ -70,7 +70,7 @@ function TemplateCustomizationView.create(project_name, template_name, on_select
 
 	local template_opts = config.templates[template_name]
 
-	local displayed_vcs = { val = template_opts.version_control }
+	local displayed_vcs = { val = template_opts.version_control_name }
 	create_option_cycler(
 		view_config.version_control.cycle_keymap,
 		view_config.version_control.text,
