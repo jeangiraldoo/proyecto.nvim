@@ -137,7 +137,7 @@ require("proyecto").setup {
     licenses = {
         new_license_name = {
             "First line of the license file",
-            "Second lne..."
+            "Second line..."
         }
     }
 }
